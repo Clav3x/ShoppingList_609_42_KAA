@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.MainPage">
+
+    <Grid RowDefinitions="Auto,*"
+      Padding="15"
+      RowSpacing="10">
+    <VerticalStackLayout Grid.Row="0" Spacing="10">
+        <Entry Placeholder="Что купить?"
+               Text="{Binding NewTaskTitle, Mode=TwoWay}" />
+
+        <HorizontalStackLayout Spacing="8">
+    <Button Text="Продукты" BackgroundColor="#4CAF50" TextColor="White"
+            Command="{Binding SelectProductsCommand}" />
+    <Button Text="Бытовое" BackgroundColor="#2196F3" TextColor="White"
+            Command="{Binding SelectHomeCommand}" />
+    <Button Text="Другое" BackgroundColor="#9E9E9E" TextColor="White"
+            Command="{Binding SelectOtherCommand}" />
+    </HorizontalStackLayout>
+<Label Text="{Binding SelectedCategory.Name}" FontSize="12" TextColor="Gray" />
+
+        <Button Text="Добавить задачу"
+                Command="{Binding AddTaskCommand}" />
+    </VerticalStackLayout>
+    <CollectionView Grid.Row="1"
+                    ItemsSource="{Binding Tasks}"
+                    EmptyView="Пока пусто. Добавь первую задачу!">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame Margin="0,5"
+                       Padding="10"
+                       CornerRadius="10"
+                       BorderColor="{Binding Color}">
+                    <VerticalStackLayout Spacing="10">
+
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                            <CheckBox Grid.Column="0"
+                                      IsChecked="{Binding IsDone, Mode=TwoWay}"
+                                      VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding Title}"
+                                   FontSize="17"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center" />
+                            <Button Grid.Column="2"
+                                    Text="✕"
+                                    Command="{Binding DeleteTaskCommand}"
+                                    BackgroundColor="Transparent"
+                                    TextColor="Red"
+                                    WidthRequest="40"
+                                    VerticalOptions="Center" />
+                        </Grid>
+
+                        <Label Text="{Binding CategoryName}"
+                               TextColor="{Binding Color}"
+                               FontSize="12" />
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Entry Grid.Column="0"
+                                   Placeholder="Добавить подзадачу"
+                                   Text="{Binding NewSubtaskTitle, Mode=TwoWay}" />
+                            <Button Grid.Column="1"
+                                    Text="+"
+                                    WidthRequest="44"
+                                    Command="{Binding AddSubtaskCommand}" />
+                        </Grid>
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Subtasks}"
+                                             Spacing="3">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                        <CheckBox Grid.Column="0"
+                                                  IsChecked="{Binding IsDone, Mode=TwoWay}" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Title}"
+                                               VerticalOptions="Center" />
+                                        <Button Grid.Column="2"
+                                                Text="✕"
+                                                Command="{Binding DeleteSubtaskCommand}"
+                                                BackgroundColor="Transparent"
+                                                TextColor="Red"
+                                                WidthRequest="36" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+
+</Grid>
+
+</ContentPage>
+
