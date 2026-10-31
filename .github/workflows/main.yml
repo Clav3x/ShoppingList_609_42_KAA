@@ -29,5 +29,14 @@ jobs:
       - name: Сборка приложения (Windows)
         run: dotnet build ShoppingList/ShoppingList.csproj -f net10.0-windows10.0.19041.0 -c Release
 
+    
       - name: Запустить тесты
         run: dotnet test ShoppingList_Tests/ShoppingList_Tests.csproj -c Release
+      - name: Опубликовать Windows-версию
+        run: dotnet publish ShoppingList/ShoppingList.csproj -f net10.0-windows10.0.19041.0 -c Release -r win-x64 --self-contained true -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true -o publish
+
+      - name: Загрузить сборку как артефакт
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShoppingList-win-x64
+          path: publish
